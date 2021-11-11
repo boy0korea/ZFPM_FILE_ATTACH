@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD02V>
-    <TABNAME>ZFPM_FILE_ATTACH</TABNAME>
+    <TABNAME>ZFPMT_FILE</TABNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <TABCLASS>TRANSP</TABCLASS>
     <CLIDEP>X</CLIDEP>
@@ -13,7 +13,7 @@
     <EXCLASS>4</EXCLASS>
    </DD02V>
    <DD09L>
-    <TABNAME>ZFPM_FILE_ATTACH</TABNAME>
+    <TABNAME>ZFPMT_FILE</TABNAME>
     <AS4LOCAL>A</AS4LOCAL>
     <TABKAT>2</TABKAT>
     <TABART>APPL1</TABART>

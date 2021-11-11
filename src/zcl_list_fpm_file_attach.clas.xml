@@ -18,6 +18,12 @@
      <ENTRY>New File Upload</ENTRY>
      <LENGTH>50</LENGTH>
     </item>
+    <item>
+     <ID>I</ID>
+     <KEY>T02</KEY>
+     <ENTRY>Download All</ENTRY>
+     <LENGTH>50</LENGTH>
+    </item>
    </TPOOL>
   </asx:values>
  </asx:abap>

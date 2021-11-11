@@ -1,15 +1,15 @@
-CLASS zcl_form_fpm_file_attach DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_FORM_FPM_FILE_ATTACH definition
+  public
+  create public .
 
-  PUBLIC SECTION.
+public section.
 
-    INTERFACES if_fpm_guibb .
-    INTERFACES if_fpm_guibb_form .
+  interfaces IF_FPM_GUIBB .
+  interfaces IF_FPM_GUIBB_FORM .
 
-    TYPES: BEGIN OF ts_data,
-             key1 TYPE zfpm_file_attach-key1,
+  types:
+    BEGIN OF ts_data,
+             key1 TYPE zfpmt_file-key1,
            END OF ts_data .
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -64,6 +64,13 @@ CLASS ZCL_FORM_FPM_FILE_ATTACH IMPLEMENTATION.
       APPEND ls_field_description TO et_field_description.
     ENDLOOP.
 
+
+**********************************************************************
+* action definition
+**********************************************************************
+    CLEAR: ls_action_definition.
+    ls_action_definition-id = if_fpm_constants=>gc_event-leave_initial_screen.
+    APPEND ls_action_definition TO et_action_definition.
 
   ENDMETHOD.
 

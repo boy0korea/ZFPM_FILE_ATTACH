@@ -1,181 +1,206 @@
-CLASS zcl_list_fpm_file_attach DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class ZCL_LIST_FPM_FILE_ATTACH definition
+  public
+  create public .
 
-  PUBLIC SECTION.
+public section.
 
-    INTERFACES if_fpm_guibb .
-    INTERFACES if_fpm_guibb_list .
+  interfaces IF_FPM_GUIBB .
+  interfaces IF_FPM_GUIBB_LIST .
 
-    TYPES:
-      BEGIN OF ts_data,
+  types:
+    BEGIN OF ts_data,
         ui_deleted      TYPE flag,
-        ui_seq_no       TYPE zfpm_file_attach-seq_no,
-        key1            TYPE zfpm_file_attach-key1,
-        seq_no          TYPE zfpm_file_attach-seq_no,
-        file_name       TYPE zfpm_file_attach-file_name,
-        file_size       TYPE zfpm_file_attach-file_size,
-        file_size_descr TYPE zfpm_file_attach-file_size_descr,
-        file_content    TYPE zfpm_file_attach-file_content,
+        ui_seq_no       TYPE zfpmt_file-seq_no,
+        key1            TYPE zfpmt_file-key1,
+        seq_no          TYPE zfpmt_file-seq_no,
+        file_name       TYPE zfpmt_file-file_name,
+        file_size       TYPE zfpmt_file-file_size,
+        file_size_descr TYPE zfpmt_file-file_size_descr,
+        file_content    TYPE zfpmt_file-file_content,
       END OF ts_data .
-    TYPES:
-      tt_data TYPE TABLE OF ts_data .
+  types:
+    tt_data TYPE TABLE OF ts_data .
   PROTECTED SECTION.
-private section.
 
-  data MV_KEY1 type ZFPM_FILE_ATTACH-KEY1 .
+    DATA mv_key1 TYPE zfpmt_file-key1 .
 
-  methods ON_OPEN
-    importing
-      !IV_EVENTID type ref to CL_FPM_EVENT
-      !IT_SELECTED_FIELDS type FPMGB_T_SELECTED_FIELDS
-      !IV_RAISED_BY_OWN_UI type BOOLE_D
-      !IV_VISIBLE_ROWS type I
-      !IV_EDIT_MODE type FPM_EDIT_MODE
-      !IO_EXTENDED_CTRL type ref to IF_FPM_LIST_ATS_EXT_CTRL
-    exporting
-      !ET_MESSAGES type FPMGB_T_MESSAGES
-      !EV_DATA_CHANGED type BOOLE_D
-      !EV_FIELD_USAGE_CHANGED type BOOLE_D
-      !EV_ACTION_USAGE_CHANGED type BOOLE_D
-      !EV_SELECTED_LINES_CHANGED type BOOLE_D
-      !EV_DND_ATTR_CHANGED type BOOLE_D
-      !EO_ITAB_CHANGE_LOG type ref to IF_SALV_ITAB_CHANGE_LOG
-    changing
-      !CT_DATA type TT_DATA
-      !CT_FIELD_USAGE type FPMGB_T_FIELDUSAGE
-      !CT_ACTION_USAGE type FPMGB_T_ACTIONUSAGE
-      !CT_SELECTED_LINES type RSTABIXTAB
-      !CV_LEAD_INDEX type SYTABIX
-      !CV_FIRST_VISIBLE_ROW type I
-      !CS_ADDITIONAL_INFO type FPMGB_S_ADDITIONAL_INFO
-      !CT_DND_ATTRIBUTES type FPMGB_T_DND_DEFINITION .
-  methods ON_EDIT
-    importing
-      !IV_EVENTID type ref to CL_FPM_EVENT
-      !IT_SELECTED_FIELDS type FPMGB_T_SELECTED_FIELDS
-      !IV_RAISED_BY_OWN_UI type BOOLE_D
-      !IV_VISIBLE_ROWS type I
-      !IV_EDIT_MODE type FPM_EDIT_MODE
-      !IO_EXTENDED_CTRL type ref to IF_FPM_LIST_ATS_EXT_CTRL
-    exporting
-      !ET_MESSAGES type FPMGB_T_MESSAGES
-      !EV_DATA_CHANGED type BOOLE_D
-      !EV_FIELD_USAGE_CHANGED type BOOLE_D
-      !EV_ACTION_USAGE_CHANGED type BOOLE_D
-      !EV_SELECTED_LINES_CHANGED type BOOLE_D
-      !EV_DND_ATTR_CHANGED type BOOLE_D
-      !EO_ITAB_CHANGE_LOG type ref to IF_SALV_ITAB_CHANGE_LOG
-    changing
-      !CT_DATA type TT_DATA
-      !CT_FIELD_USAGE type FPMGB_T_FIELDUSAGE
-      !CT_ACTION_USAGE type FPMGB_T_ACTIONUSAGE
-      !CT_SELECTED_LINES type RSTABIXTAB
-      !CV_LEAD_INDEX type SYTABIX
-      !CV_FIRST_VISIBLE_ROW type I
-      !CS_ADDITIONAL_INFO type FPMGB_S_ADDITIONAL_INFO
-      !CT_DND_ATTRIBUTES type FPMGB_T_DND_DEFINITION .
-  methods ON_CELL_ACTION
-    importing
-      !IV_EVENTID type ref to CL_FPM_EVENT
-      !IT_SELECTED_FIELDS type FPMGB_T_SELECTED_FIELDS
-      !IV_RAISED_BY_OWN_UI type BOOLE_D
-      !IV_VISIBLE_ROWS type I
-      !IV_EDIT_MODE type FPM_EDIT_MODE
-      !IO_EXTENDED_CTRL type ref to IF_FPM_LIST_ATS_EXT_CTRL
-    exporting
-      !ET_MESSAGES type FPMGB_T_MESSAGES
-      !EV_DATA_CHANGED type BOOLE_D
-      !EV_FIELD_USAGE_CHANGED type BOOLE_D
-      !EV_ACTION_USAGE_CHANGED type BOOLE_D
-      !EV_SELECTED_LINES_CHANGED type BOOLE_D
-      !EV_DND_ATTR_CHANGED type BOOLE_D
-      !EO_ITAB_CHANGE_LOG type ref to IF_SALV_ITAB_CHANGE_LOG
-    changing
-      !CT_DATA type TT_DATA
-      !CT_FIELD_USAGE type FPMGB_T_FIELDUSAGE
-      !CT_ACTION_USAGE type FPMGB_T_ACTIONUSAGE
-      !CT_SELECTED_LINES type RSTABIXTAB
-      !CV_LEAD_INDEX type SYTABIX
-      !CV_FIRST_VISIBLE_ROW type I
-      !CS_ADDITIONAL_INFO type FPMGB_S_ADDITIONAL_INFO
-      !CT_DND_ATTRIBUTES type FPMGB_T_DND_DEFINITION .
-  methods ON_SAVE
-    importing
-      !IV_EVENTID type ref to CL_FPM_EVENT
-      !IT_SELECTED_FIELDS type FPMGB_T_SELECTED_FIELDS
-      !IV_RAISED_BY_OWN_UI type BOOLE_D
-      !IV_VISIBLE_ROWS type I
-      !IV_EDIT_MODE type FPM_EDIT_MODE
-      !IO_EXTENDED_CTRL type ref to IF_FPM_LIST_ATS_EXT_CTRL
-    exporting
-      !ET_MESSAGES type FPMGB_T_MESSAGES
-      !EV_DATA_CHANGED type BOOLE_D
-      !EV_FIELD_USAGE_CHANGED type BOOLE_D
-      !EV_ACTION_USAGE_CHANGED type BOOLE_D
-      !EV_SELECTED_LINES_CHANGED type BOOLE_D
-      !EV_DND_ATTR_CHANGED type BOOLE_D
-      !EO_ITAB_CHANGE_LOG type ref to IF_SALV_ITAB_CHANGE_LOG
-    changing
-      !CT_DATA type TT_DATA
-      !CT_FIELD_USAGE type FPMGB_T_FIELDUSAGE
-      !CT_ACTION_USAGE type FPMGB_T_ACTIONUSAGE
-      !CT_SELECTED_LINES type RSTABIXTAB
-      !CV_LEAD_INDEX type SYTABIX
-      !CV_FIRST_VISIBLE_ROW type I
-      !CS_ADDITIONAL_INFO type FPMGB_S_ADDITIONAL_INFO
-      !CT_DND_ATTRIBUTES type FPMGB_T_DND_DEFINITION .
-  methods ON_DELETE_LINE
-    importing
-      !IV_EVENTID type ref to CL_FPM_EVENT
-      !IT_SELECTED_FIELDS type FPMGB_T_SELECTED_FIELDS
-      !IV_RAISED_BY_OWN_UI type BOOLE_D
-      !IV_VISIBLE_ROWS type I
-      !IV_EDIT_MODE type FPM_EDIT_MODE
-      !IO_EXTENDED_CTRL type ref to IF_FPM_LIST_ATS_EXT_CTRL
-    exporting
-      !ET_MESSAGES type FPMGB_T_MESSAGES
-      !EV_DATA_CHANGED type BOOLE_D
-      !EV_FIELD_USAGE_CHANGED type BOOLE_D
-      !EV_ACTION_USAGE_CHANGED type BOOLE_D
-      !EV_SELECTED_LINES_CHANGED type BOOLE_D
-      !EV_DND_ATTR_CHANGED type BOOLE_D
-      !EO_ITAB_CHANGE_LOG type ref to IF_SALV_ITAB_CHANGE_LOG
-    changing
-      !CT_DATA type TT_DATA
-      !CT_FIELD_USAGE type FPMGB_T_FIELDUSAGE
-      !CT_ACTION_USAGE type FPMGB_T_ACTIONUSAGE
-      !CT_SELECTED_LINES type RSTABIXTAB
-      !CV_LEAD_INDEX type SYTABIX
-      !CV_FIRST_VISIBLE_ROW type I
-      !CS_ADDITIONAL_INFO type FPMGB_S_ADDITIONAL_INFO
-      !CT_DND_ATTRIBUTES type FPMGB_T_DND_DEFINITION .
-  methods ON_UNDELETE_LINE
-    importing
-      !IV_EVENTID type ref to CL_FPM_EVENT
-      !IT_SELECTED_FIELDS type FPMGB_T_SELECTED_FIELDS
-      !IV_RAISED_BY_OWN_UI type BOOLE_D
-      !IV_VISIBLE_ROWS type I
-      !IV_EDIT_MODE type FPM_EDIT_MODE
-      !IO_EXTENDED_CTRL type ref to IF_FPM_LIST_ATS_EXT_CTRL
-    exporting
-      !ET_MESSAGES type FPMGB_T_MESSAGES
-      !EV_DATA_CHANGED type BOOLE_D
-      !EV_FIELD_USAGE_CHANGED type BOOLE_D
-      !EV_ACTION_USAGE_CHANGED type BOOLE_D
-      !EV_SELECTED_LINES_CHANGED type BOOLE_D
-      !EV_DND_ATTR_CHANGED type BOOLE_D
-      !EO_ITAB_CHANGE_LOG type ref to IF_SALV_ITAB_CHANGE_LOG
-    changing
-      !CT_DATA type TT_DATA
-      !CT_FIELD_USAGE type FPMGB_T_FIELDUSAGE
-      !CT_ACTION_USAGE type FPMGB_T_ACTIONUSAGE
-      !CT_SELECTED_LINES type RSTABIXTAB
-      !CV_LEAD_INDEX type SYTABIX
-      !CV_FIRST_VISIBLE_ROW type I
-      !CS_ADDITIONAL_INFO type FPMGB_S_ADDITIONAL_INFO
-      !CT_DND_ATTRIBUTES type FPMGB_T_DND_DEFINITION .
+    METHODS readme .
+    METHODS on_open
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+    METHODS on_edit
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+    METHODS on_cell_action
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+    METHODS on_save
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+    METHODS on_delete_line
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+    METHODS on_undelete_line
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+    METHODS on_download_zip
+      IMPORTING
+        !iv_eventid                TYPE REF TO cl_fpm_event
+        !it_selected_fields        TYPE fpmgb_t_selected_fields
+        !iv_raised_by_own_ui       TYPE boole_d
+        !iv_visible_rows           TYPE i
+        !iv_edit_mode              TYPE fpm_edit_mode
+        !io_extended_ctrl          TYPE REF TO if_fpm_list_ats_ext_ctrl
+      EXPORTING
+        !et_messages               TYPE fpmgb_t_messages
+        !ev_data_changed           TYPE boole_d
+        !ev_field_usage_changed    TYPE boole_d
+        !ev_action_usage_changed   TYPE boole_d
+        !ev_selected_lines_changed TYPE boole_d
+        !ev_dnd_attr_changed       TYPE boole_d
+        !eo_itab_change_log        TYPE REF TO if_salv_itab_change_log
+      CHANGING
+        !ct_data                   TYPE tt_data
+        !ct_field_usage            TYPE fpmgb_t_fieldusage
+        !ct_action_usage           TYPE fpmgb_t_actionusage
+        !ct_selected_lines         TYPE rstabixtab
+        !cv_lead_index             TYPE sytabix
+        !cv_first_visible_row      TYPE i
+        !cs_additional_info        TYPE fpmgb_s_additional_info
+        !ct_dnd_attributes         TYPE fpmgb_t_dnd_definition .
+  PRIVATE SECTION.
 ENDCLASS.
 
 
@@ -194,7 +219,8 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
   METHOD if_fpm_guibb_list~get_data.
     DATA: lo_event        TYPE REF TO cl_fpm_event,
           ls_field_usage  TYPE fpmgb_s_fieldusage,
-          ls_action_usage	TYPE fpmgb_s_actionusage.
+          ls_action_usage	TYPE fpmgb_s_actionusage,
+          lv_index        TYPE i.
     FIELD-SYMBOLS: <lt_data> TYPE tt_data,
                    <ls_data> TYPE ts_data.
 
@@ -426,6 +452,36 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
         ).
 
 
+      WHEN 'DOWNLOAD_ZIP'.
+        CHECK iv_raised_by_own_ui EQ abap_true.
+        on_download_zip(
+          EXPORTING
+            iv_eventid                = iv_eventid
+            it_selected_fields        = it_selected_fields
+            iv_raised_by_own_ui       = iv_raised_by_own_ui
+            iv_visible_rows           = iv_visible_rows
+            iv_edit_mode              = iv_edit_mode
+            io_extended_ctrl          = io_extended_ctrl
+          IMPORTING
+            et_messages               = et_messages
+            ev_data_changed           = ev_data_changed
+            ev_field_usage_changed    = ev_field_usage_changed
+            ev_action_usage_changed   = ev_action_usage_changed
+            ev_selected_lines_changed = ev_selected_lines_changed
+            ev_dnd_attr_changed       = ev_dnd_attr_changed
+            eo_itab_change_log        = eo_itab_change_log
+          CHANGING
+            ct_data                   = ct_data
+            ct_field_usage            = ct_field_usage
+            ct_action_usage           = ct_action_usage
+            ct_selected_lines         = ct_selected_lines
+            cv_lead_index             = cv_lead_index
+            cv_first_visible_row      = cv_first_visible_row
+            cs_additional_info        = cs_additional_info
+            ct_dnd_attributes         = ct_dnd_attributes
+        ).
+
+
     ENDCASE.
 
 **********************************************************************
@@ -446,12 +502,13 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
 **********************************************************************
 * edit mode control
 **********************************************************************
-    READ TABLE ct_action_usage INTO ls_action_usage INDEX 1.
+    READ TABLE ct_action_usage INTO ls_action_usage WITH KEY id = 'NEW_UPLOAD'.
+    lv_index = sy-tabix.
     CASE iv_edit_mode.
       WHEN if_fpm_constants=>gc_edit_mode-edit.
         IF ls_action_usage-enabled EQ abap_false.
           ls_action_usage-enabled = abap_true.
-          MODIFY ct_action_usage FROM ls_action_usage TRANSPORTING enabled WHERE enabled = abap_false.
+          MODIFY ct_action_usage FROM ls_action_usage INDEX lv_index.
           ev_action_usage_changed = abap_true.
           ct_field_usage[ name = if_fpm_guibb_constants=>gc_guibb_row_action_column ]-visibility = if_fpm_constants=>gc_visibility-visible.
           ev_field_usage_changed = abap_true.
@@ -459,7 +516,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
       WHEN OTHERS.
         IF ls_action_usage-enabled EQ abap_true.
           ls_action_usage-enabled = abap_false.
-          MODIFY ct_action_usage FROM ls_action_usage TRANSPORTING enabled WHERE enabled = abap_true.
+          MODIFY ct_action_usage FROM ls_action_usage INDEX lv_index.
           ev_action_usage_changed = abap_true.
           ct_field_usage[ name = if_fpm_guibb_constants=>gc_guibb_row_action_column ]-visibility = if_fpm_constants=>gc_visibility-not_visible.
           ev_field_usage_changed = abap_true.
@@ -509,6 +566,13 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
     ls_action_definition-id = 'NEW_UPLOAD'.
     ls_action_definition-text = TEXT-t01.
     ls_action_definition-imagesrc = '~Icon/NewItem'.
+    ls_action_definition-enabled = abap_true.
+    APPEND ls_action_definition TO et_action_definition.
+
+    CLEAR: ls_action_definition.
+    ls_action_definition-id = 'DOWNLOAD_ZIP'.
+    ls_action_definition-text = TEXT-t02.
+    ls_action_definition-imagesrc = '~Icon/Download'.
     ls_action_definition-enabled = abap_true.
     APPEND ls_action_definition TO et_action_definition.
 
@@ -572,7 +636,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
           " read from DB.
           SELECT SINGLE file_content
             INTO lv_xstring
-            FROM zfpm_file_attach
+            FROM zfpmt_file
             WHERE key1 = <ls_data>-key1
               AND seq_no = <ls_data>-seq_no.
         ELSE.
@@ -622,7 +686,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD ON_EDIT.
+  METHOD on_edit.
     FIELD-SYMBOLS: <ls_data> TYPE ts_data.
 
     CLEAR: ct_data.
@@ -631,7 +695,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
     IF mv_key1 IS NOT INITIAL.
       SELECT key1 seq_no file_name file_size_descr
         INTO CORRESPONDING FIELDS OF TABLE ct_data
-        FROM zfpm_file_attach
+        FROM zfpmt_file
         WHERE key1 = mv_key1.
       SORT ct_data BY seq_no.
       LOOP AT ct_data ASSIGNING <ls_data>.
@@ -680,44 +744,44 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD ON_SAVE.
-    DATA: lt_zfpm_file_attach_ins TYPE TABLE OF zfpm_file_attach,
-          lt_zfpm_file_attach_del TYPE TABLE OF zfpm_file_attach,
-          ls_zfpm_file_attach     TYPE zfpm_file_attach,
-          lv_seq_no               TYPE zfpm_file_attach-seq_no.
+  METHOD on_save.
+    DATA: lt_zfpmt_file_ins TYPE TABLE OF zfpmt_file,
+          lt_zfpmt_file_del TYPE TABLE OF zfpmt_file,
+          ls_zfpmt_file     TYPE zfpmt_file,
+          lv_seq_no         TYPE zfpmt_file-seq_no.
     FIELD-SYMBOLS: <ls_data> TYPE ts_data.
 
     SELECT MAX( seq_no )
       INTO lv_seq_no
-      FROM zfpm_file_attach
+      FROM zfpmt_file
       WHERE key1 = mv_key1.
 
 
     LOOP AT ct_data ASSIGNING <ls_data>.
       IF <ls_data>-ui_deleted EQ abap_true.
         " del
-        MOVE-CORRESPONDING <ls_data> TO ls_zfpm_file_attach.
-        APPEND ls_zfpm_file_attach TO lt_zfpm_file_attach_del.
+        MOVE-CORRESPONDING <ls_data> TO ls_zfpmt_file.
+        APPEND ls_zfpmt_file TO lt_zfpmt_file_del.
       ELSEIF <ls_data>-key1 IS INITIAL.
         " ins
-        MOVE-CORRESPONDING <ls_data> TO ls_zfpm_file_attach.
-        ls_zfpm_file_attach-key1 = mv_key1.
+        MOVE-CORRESPONDING <ls_data> TO ls_zfpmt_file.
+        ls_zfpmt_file-key1 = mv_key1.
         lv_seq_no = lv_seq_no + 1.
-        ls_zfpm_file_attach-seq_no = lv_seq_no.
-        ls_zfpm_file_attach-created_by = sy-uname.
-        APPEND ls_zfpm_file_attach TO lt_zfpm_file_attach_ins.
+        ls_zfpmt_file-seq_no = lv_seq_no.
+        ls_zfpmt_file-created_by = sy-uname.
+        APPEND ls_zfpmt_file TO lt_zfpmt_file_ins.
       ENDIF.
     ENDLOOP.
 
-    CHECK: lt_zfpm_file_attach_del IS NOT INITIAL OR lt_zfpm_file_attach_ins IS NOT INITIAL.
+    CHECK: lt_zfpmt_file_del IS NOT INITIAL OR lt_zfpmt_file_ins IS NOT INITIAL.
 
 
-    IF lt_zfpm_file_attach_del IS NOT INITIAL.
-      DELETE zfpm_file_attach FROM TABLE lt_zfpm_file_attach_del.
+    IF lt_zfpmt_file_del IS NOT INITIAL.
+      DELETE zfpmt_file FROM TABLE lt_zfpmt_file_del.
     ENDIF.
 
-    IF lt_zfpm_file_attach_ins IS NOT INITIAL.
-      INSERT zfpm_file_attach FROM TABLE lt_zfpm_file_attach_ins.
+    IF lt_zfpmt_file_ins IS NOT INITIAL.
+      INSERT zfpmt_file FROM TABLE lt_zfpmt_file_ins.
     ENDIF.
 
     COMMIT WORK.
@@ -741,5 +805,61 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
     READ TABLE ct_data ASSIGNING <ls_data> INDEX lv_index.
     <ls_data>-ui_deleted = abap_false.
 
+  ENDMETHOD.
+
+
+  METHOD on_download_zip.
+    DATA: lt_zfpmt_file TYPE TABLE OF zfpmt_file,
+          ls_zfpmt_file TYPE zfpmt_file,
+          lo_zip        TYPE REF TO cl_abap_zip,
+          lv_zip        TYPE xstring.
+    FIELD-SYMBOLS: <ls_data>       TYPE ts_data,
+                   <ls_zfpmt_file> TYPE zfpmt_file.
+
+
+    CREATE OBJECT lo_zip.
+
+    SELECT *
+      INTO TABLE lt_zfpmt_file
+      FROM zfpmt_file
+      WHERE key1 = mv_key1.
+    SORT lt_zfpmt_file BY seq_no.
+    LOOP AT ct_data ASSIGNING <ls_data>.
+      IF <ls_data>-ui_deleted EQ abap_true.
+        READ TABLE lt_zfpmt_file TRANSPORTING NO FIELDS WITH KEY seq_no = <ls_data>-seq_no BINARY SEARCH.
+        IF sy-subrc EQ 0.
+          DELETE lt_zfpmt_file INDEX sy-tabix.
+        ENDIF.
+      ELSEIF <ls_data>-key1 IS INITIAL.
+        MOVE-CORRESPONDING <ls_data> TO ls_zfpmt_file.
+        APPEND ls_zfpmt_file TO lt_zfpmt_file.
+      ENDIF.
+    ENDLOOP.
+
+
+    LOOP AT lt_zfpmt_file ASSIGNING <ls_zfpmt_file>.
+      lo_zip->add(
+        EXPORTING
+          name           = <ls_zfpmt_file>-file_name
+          content        = <ls_zfpmt_file>-file_content
+      ).
+    ENDLOOP.
+
+
+    lv_zip = lo_zip->save( ).
+
+    cl_wd_runtime_services=>attach_file_to_response(
+      EXPORTING
+        i_filename      = |{ mv_key1 }_{ sy-datum }.zip|
+        i_content       = lv_zip
+        i_mime_type     = 'BIN'
+    ).
+
+
+  ENDMETHOD.
+
+
+  METHOD readme.
+* https://github.com/boy0korea/ZFPM_FILE_ATTACH
   ENDMETHOD.
 ENDCLASS.
