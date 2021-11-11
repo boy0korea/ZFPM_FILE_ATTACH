@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Name="ZFPM_FILE_ATTACH" ConfId="ZFPM_FILE_ATTACH" ConfType="02" ConfVar="">
+ <Component Name="FPM_OVP_COMPONENT" Usage="ZFPM_FILE_ATTACH" ConfType="00" ConfId="ZFPM_FILE_ATTACH" ConfVar="" Interface="False"/>
+</Application>
