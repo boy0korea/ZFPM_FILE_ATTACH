@@ -613,7 +613,8 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
           lv_xstring     TYPE xstring,
           lv_column_name TYPE string,
           lv_index       TYPE i.
-    FIELD-SYMBOLS: <ls_data> TYPE ts_data.
+    FIELD-SYMBOLS: <ls_data> TYPE ts_data,
+                   <lv_data> TYPE data.
 
     iv_eventid->mo_event_data->get_value(
       EXPORTING
@@ -639,14 +640,15 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
             FROM zfpmt_file
             WHERE key1 = <ls_data>-key1
               AND seq_no = <ls_data>-seq_no.
+          ASSIGN lv_xstring TO <lv_data>.
         ELSE.
           " read from memory.
-          lv_xstring = <ls_data>-file_content.
+          ASSIGN <ls_data>-file_content TO <lv_data>.
         ENDIF.
         cl_wd_runtime_services=>attach_file_to_response(
           EXPORTING
             i_filename      = <ls_data>-file_name
-            i_content       = lv_xstring
+            i_content       = <lv_data>
             i_mime_type     = CONV #( <ls_data>-file_type )
 *            i_in_new_window = abap_false
 *            i_inplace       = abap_false
