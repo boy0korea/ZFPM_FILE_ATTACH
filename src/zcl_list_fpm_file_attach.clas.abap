@@ -1,25 +1,21 @@
-class ZCL_LIST_FPM_FILE_ATTACH definition
-  public
-  create public .
+CLASS zcl_list_fpm_file_attach DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  interfaces IF_FPM_GUIBB .
-  interfaces IF_FPM_GUIBB_LIST .
+    INTERFACES if_fpm_guibb .
+    INTERFACES if_fpm_guibb_list .
 
-  types:
-    BEGIN OF ts_data,
-        ui_deleted      TYPE flag,
-        ui_seq_no       TYPE zfpmt_file-seq_no,
-        key1            TYPE zfpmt_file-key1,
-        seq_no          TYPE zfpmt_file-seq_no,
-        file_name       TYPE zfpmt_file-file_name,
-        file_size       TYPE zfpmt_file-file_size,
-        file_size_descr TYPE zfpmt_file-file_size_descr,
-        file_content    TYPE zfpmt_file-file_content,
+    TYPES:
+      BEGIN OF ts_data.
+        INCLUDE TYPE zfpmt_file.
+    TYPES:
+        ui_deleted TYPE flag,
+        ui_seq_no  TYPE dms_doc_index,
       END OF ts_data .
-  types:
-    tt_data TYPE TABLE OF ts_data .
+    TYPES:
+      tt_data TYPE TABLE OF ts_data .
   PROTECTED SECTION.
 
     DATA mv_key1 TYPE zfpmt_file-key1 .
@@ -390,6 +386,12 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
           IMPORTING
             ev_value = <ls_data>-file_size_descr
         ).
+        iv_eventid->mo_event_data->get_value(
+          EXPORTING
+            iv_key   = 'IV_FILE_TYPE'
+          IMPORTING
+            ev_value = <ls_data>-file_type
+        ).
 
 
       WHEN 'DELETE_LINE'.
@@ -611,8 +613,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
           lv_xstring     TYPE xstring,
           lv_column_name TYPE string,
           lv_index       TYPE i.
-    FIELD-SYMBOLS: <lt_data> TYPE tt_data,
-                   <ls_data> TYPE ts_data.
+    FIELD-SYMBOLS: <ls_data> TYPE ts_data.
 
     iv_eventid->mo_event_data->get_value(
       EXPORTING
@@ -627,8 +628,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
         ev_value = lv_index
     ).
 
-    ASSIGN ct_data TO <lt_data>.
-    READ TABLE <lt_data> ASSIGNING <ls_data> INDEX lv_index.
+    READ TABLE ct_data ASSIGNING <ls_data> INDEX lv_index.
 
     CASE lv_column_name.
       WHEN 'FILE_NAME'.
@@ -647,7 +647,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
           EXPORTING
             i_filename      = <ls_data>-file_name
             i_content       = lv_xstring
-            i_mime_type     = 'BIN'
+            i_mime_type     = CONV #( <ls_data>-file_type )
 *            i_in_new_window = abap_false
 *            i_inplace       = abap_false
         ).
@@ -693,7 +693,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
     ev_data_changed = abap_true.
 
     IF mv_key1 IS NOT INITIAL.
-      SELECT key1 seq_no file_name file_size_descr
+      SELECT key1 seq_no file_name file_size file_size_descr file_type created_by created_on
         INTO CORRESPONDING FIELDS OF TABLE ct_data
         FROM zfpmt_file
         WHERE key1 = mv_key1.
@@ -769,6 +769,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
         lv_seq_no = lv_seq_no + 1.
         ls_zfpmt_file-seq_no = lv_seq_no.
         ls_zfpmt_file-created_by = sy-uname.
+        GET TIME STAMP FIELD ls_zfpmt_file-created_on.
         APPEND ls_zfpmt_file TO lt_zfpmt_file_ins.
       ENDIF.
     ENDLOOP.
@@ -785,6 +786,33 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
     ENDIF.
 
     COMMIT WORK.
+
+    on_edit(
+      EXPORTING
+        iv_eventid                = iv_eventid
+        it_selected_fields        = it_selected_fields
+        iv_raised_by_own_ui       = iv_raised_by_own_ui
+        iv_visible_rows           = iv_visible_rows
+        iv_edit_mode              = iv_edit_mode
+        io_extended_ctrl          = io_extended_ctrl
+      IMPORTING
+        et_messages               = et_messages
+        ev_data_changed           = ev_data_changed
+        ev_field_usage_changed    = ev_field_usage_changed
+        ev_action_usage_changed   = ev_action_usage_changed
+        ev_selected_lines_changed = ev_selected_lines_changed
+        ev_dnd_attr_changed       = ev_dnd_attr_changed
+        eo_itab_change_log        = eo_itab_change_log
+      CHANGING
+        ct_data                   = ct_data
+        ct_field_usage            = ct_field_usage
+        ct_action_usage           = ct_action_usage
+        ct_selected_lines         = ct_selected_lines
+        cv_lead_index             = cv_lead_index
+        cv_first_visible_row      = cv_first_visible_row
+        cs_additional_info        = cs_additional_info
+        ct_dnd_attributes         = ct_dnd_attributes
+    ).
 
   ENDMETHOD.
 
@@ -810,10 +838,10 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
 
   METHOD on_download_zip.
     DATA: lt_zfpmt_file TYPE TABLE OF zfpmt_file,
-          ls_zfpmt_file TYPE zfpmt_file,
           lo_zip        TYPE REF TO cl_abap_zip,
           lv_zip        TYPE xstring.
     FIELD-SYMBOLS: <ls_data>       TYPE ts_data,
+                   <lv_data>       TYPE data,
                    <ls_zfpmt_file> TYPE zfpmt_file.
 
 
@@ -824,27 +852,22 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
       FROM zfpmt_file
       WHERE key1 = mv_key1.
     SORT lt_zfpmt_file BY seq_no.
-    LOOP AT ct_data ASSIGNING <ls_data>.
-      IF <ls_data>-ui_deleted EQ abap_true.
-        READ TABLE lt_zfpmt_file TRANSPORTING NO FIELDS WITH KEY seq_no = <ls_data>-seq_no BINARY SEARCH.
-        IF sy-subrc EQ 0.
-          DELETE lt_zfpmt_file INDEX sy-tabix.
-        ENDIF.
-      ELSEIF <ls_data>-key1 IS INITIAL.
-        MOVE-CORRESPONDING <ls_data> TO ls_zfpmt_file.
-        APPEND ls_zfpmt_file TO lt_zfpmt_file.
+
+    LOOP AT ct_data ASSIGNING <ls_data> WHERE ui_deleted = abap_false.
+      IF <ls_data>-seq_no IS NOT INITIAL.
+        " read from DB.
+        READ TABLE lt_zfpmt_file ASSIGNING <ls_zfpmt_file> WITH KEY seq_no = <ls_data>-seq_no BINARY SEARCH.
+        ASSIGN <ls_zfpmt_file>-file_content TO <lv_data>.
+      ELSE.
+        " read from memory.
+        ASSIGN <ls_data>-file_content TO <lv_data>.
       ENDIF.
-    ENDLOOP.
-
-
-    LOOP AT lt_zfpmt_file ASSIGNING <ls_zfpmt_file>.
       lo_zip->add(
         EXPORTING
-          name           = <ls_zfpmt_file>-file_name
-          content        = <ls_zfpmt_file>-file_content
+          name           = <ls_data>-file_name
+          content        = <lv_data>
       ).
     ENDLOOP.
-
 
     lv_zip = lo_zip->save( ).
 

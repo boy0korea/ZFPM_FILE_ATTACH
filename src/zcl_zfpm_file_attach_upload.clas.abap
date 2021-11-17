@@ -1,42 +1,43 @@
-class ZCL_ZFPM_FILE_ATTACH_UPLOAD definition
-  public
-  inheriting from CL_WD_COMPONENT_ASSISTANCE
-  create public .
+CLASS zcl_zfpm_file_attach_upload DEFINITION
+  PUBLIC
+  INHERITING FROM cl_wd_component_assistance
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  class-data GO_WD_COMP type ref to ZIWCI_FPM_FILE_ATTACH_UPLOAD read-only .
-  class-data GV_WD_COMP_ID type STRING read-only .
-  data MO_COMP_USAGE type ref to IF_WD_COMPONENT_USAGE .
-  data MO_EVENT_DATA type ref to IF_FPM_PARAMETER .
+    CLASS-DATA go_wd_comp TYPE REF TO ziwci_fpm_file_attach_upload READ-ONLY .
+    CLASS-DATA gv_wd_comp_id TYPE string READ-ONLY .
+    DATA mo_comp_usage TYPE REF TO if_wd_component_usage .
+    DATA mo_event_data TYPE REF TO if_fpm_parameter .
 
-  class-methods CLASS_CONSTRUCTOR .
-  class-methods FPM_POPUP
-    importing
-      !IO_EVENT_ORIG type ref to CL_FPM_EVENT optional
-      !IV_CALLBACK_EVENT_ID type STRING
-      !IO_EVENT_DATA type ref to IF_FPM_PARAMETER optional .
-  methods ON_CLOSE
-    for event WINDOW_CLOSED of IF_WD_WINDOW .
-  methods ON_OK
-    importing
-      !IV_FILE_NAME type FPM_FILE_NAME
-      !IV_FILE_CONTENT type FPM_FILE_CONTENT
-      !IV_FILE_SIZE type FPM_FILE_SIZE
-      !IV_FILE_SIZE_DESCR type FPM_FILESIZE_DESCR .
-  class-methods OPEN_POPUP
-    importing
-      !IO_EVENT_DATA type ref to IF_FPM_PARAMETER .
-  class-methods WD_POPUP
-    importing
-      !IO_VIEW type ref to IF_WD_VIEW_CONTROLLER
-      !IV_CALLBACK_ACTION type STRING
-      !IO_EVENT_DATA type ref to IF_FPM_PARAMETER optional .
-protected section.
+    CLASS-METHODS class_constructor .
+    CLASS-METHODS fpm_popup
+      IMPORTING
+        !io_event_orig        TYPE REF TO cl_fpm_event OPTIONAL
+        !iv_callback_event_id TYPE string
+        !io_event_data        TYPE REF TO if_fpm_parameter OPTIONAL .
+    METHODS on_close
+        FOR EVENT window_closed OF if_wd_window .
+    METHODS on_ok
+      IMPORTING
+        !iv_file_name       TYPE fpm_file_name
+        !iv_file_content    TYPE fpm_file_content
+        !iv_file_size       TYPE fpm_file_size
+        !iv_file_size_descr TYPE fpm_filesize_descr
+        !iv_file_type       TYPE fpm_file_type .
+    CLASS-METHODS open_popup
+      IMPORTING
+        !io_event_data TYPE REF TO if_fpm_parameter .
+    CLASS-METHODS wd_popup
+      IMPORTING
+        !io_view            TYPE REF TO if_wd_view_controller
+        !iv_callback_action TYPE string
+        !io_event_data      TYPE REF TO if_fpm_parameter OPTIONAL .
+  PROTECTED SECTION.
 
-  methods DO_CALLBACK .
-  class-methods README .
-private section.
+    METHODS do_callback .
+    CLASS-METHODS readme .
+  PRIVATE SECTION.
 ENDCLASS.
 
 
@@ -51,18 +52,18 @@ CLASS ZCL_ZFPM_FILE_ATTACH_UPLOAD IMPLEMENTATION.
 
 
   METHOD do_callback.
-    DATA: lv_event_id    TYPE fpm_event_id,
-          lo_fpm         TYPE REF TO if_fpm,
-          lo_event       TYPE REF TO cl_fpm_event,
-          lo_event_org   TYPE REF TO cl_fpm_event,
-          lt_key         TYPE TABLE OF string,
-          lv_key         TYPE string,
-          lr_value       TYPE REF TO data,
-          lv_action      TYPE string,
-          lo_view        TYPE REF TO cl_wdr_view,
-          lo_action      TYPE REF TO if_wdr_action,
-          lt_param       TYPE wdr_name_value_list,
-          ls_param       TYPE wdr_name_value.
+    DATA: lv_event_id  TYPE fpm_event_id,
+          lo_fpm       TYPE REF TO if_fpm,
+          lo_event     TYPE REF TO cl_fpm_event,
+          lo_event_org TYPE REF TO cl_fpm_event,
+          lt_key       TYPE TABLE OF string,
+          lv_key       TYPE string,
+          lr_value     TYPE REF TO data,
+          lv_action    TYPE string,
+          lo_view      TYPE REF TO cl_wdr_view,
+          lo_action    TYPE REF TO if_wdr_action,
+          lt_param     TYPE wdr_name_value_list,
+          ls_param     TYPE wdr_name_value.
 
 
 **********************************************************************

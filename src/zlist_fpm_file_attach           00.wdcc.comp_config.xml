@@ -30,6 +30,7 @@
           <Item Index="000001" SimpleFormat="true">
            <FPM_PRIMARY_ATTRIBUTE Final="5 ">_GENP_42010A02B0231EDC90D63D3197915D40</FPM_PRIMARY_ATTRIBUTE>
            <EVENT_ID>DOWNLOAD_ZIP</EVENT_ID>
+           <INDEX>1</INDEX>
           </Item>
          </Node>
         </Item>
@@ -86,7 +87,7 @@
       <Item Index="000003" SimpleFormat="true">
        <ELEMENT_ID Final="5 ">_GENP_42010A02B0231EDC90D42BA1D887DD40</ELEMENT_ID>
        <NAME>FILE_NAME</NAME>
-       <DISPLAY_TYPE>TV</DISPLAY_TYPE>
+       <DISPLAY_TYPE>LA</DISPLAY_TYPE>
        <INDEX>3</INDEX>
        <HEADER Transl="true"/>
        <SPECIAL_PROPERTIES/>
@@ -114,6 +115,52 @@
        <HEADER Transl="true"/>
        <SPECIAL_PROPERTIES/>
        <WIDTH>100px</WIDTH>
+       <TAG_ACTIVE/>
+       <TAG/>
+       <TOOLTIP Transl="true"/>
+       <VISIBILITY/>
+       <FIXED>01</FIXED>
+       <TOOLTIP_HEADER Transl="true"/>
+       <CTXT_MENU_ID/>
+       <INSTANCE_STYLE/>
+       <HEADER_INSTANCE_STYLE/>
+       <EXPLANATION_TEXT Transl="true"/>
+       <MULTI_EDITOR_ID/>
+       <MULTI_EDITOR_NEW_LINE/>
+       <EXPLANATION_TEXT_HEADER Transl="true"/>
+       <Node Name="COLUMN_ACTION" SimpleFormat="true"/>
+      </Item>
+      <Item Index="000005" SimpleFormat="true">
+       <ELEMENT_ID Final="5 ">_GENP_42010A02B0231EDC91EF34C257E7BD40</ELEMENT_ID>
+       <NAME>CREATED_BY</NAME>
+       <DISPLAY_TYPE>TV</DISPLAY_TYPE>
+       <INDEX>5</INDEX>
+       <HEADER Transl="true"/>
+       <SPECIAL_PROPERTIES/>
+       <WIDTH>100px</WIDTH>
+       <TAG_ACTIVE/>
+       <TAG/>
+       <TOOLTIP Transl="true"/>
+       <VISIBILITY/>
+       <FIXED>01</FIXED>
+       <TOOLTIP_HEADER Transl="true"/>
+       <CTXT_MENU_ID/>
+       <INSTANCE_STYLE/>
+       <HEADER_INSTANCE_STYLE/>
+       <EXPLANATION_TEXT Transl="true"/>
+       <MULTI_EDITOR_ID/>
+       <MULTI_EDITOR_NEW_LINE/>
+       <EXPLANATION_TEXT_HEADER Transl="true"/>
+       <Node Name="COLUMN_ACTION" SimpleFormat="true"/>
+      </Item>
+      <Item Index="000006" SimpleFormat="true">
+       <ELEMENT_ID Final="5 ">_GENP_42010A02B0231EDC91EF340FE2B65D40</ELEMENT_ID>
+       <NAME>CREATED_ON</NAME>
+       <DISPLAY_TYPE>TV</DISPLAY_TYPE>
+       <INDEX>6</INDEX>
+       <HEADER Transl="true"/>
+       <SPECIAL_PROPERTIES/>
+       <WIDTH/>
        <TAG_ACTIVE/>
        <TAG/>
        <TOOLTIP Transl="true"/>
