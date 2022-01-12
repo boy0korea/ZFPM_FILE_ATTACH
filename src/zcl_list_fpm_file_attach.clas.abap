@@ -848,6 +848,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
 
 
     CREATE OBJECT lo_zip.
+    lo_zip->support_unicode_names = abap_true.
 
     SELECT *
       INTO TABLE lt_zfpmt_file
@@ -877,7 +878,7 @@ CLASS ZCL_LIST_FPM_FILE_ATTACH IMPLEMENTATION.
       EXPORTING
         i_filename      = |{ mv_key1 }_{ sy-datum }.zip|
         i_content       = lv_zip
-        i_mime_type     = 'BIN'
+        i_mime_type     = 'application/x-zip'
     ).
 
 

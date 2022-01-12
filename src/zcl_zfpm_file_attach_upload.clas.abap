@@ -52,18 +52,18 @@ CLASS ZCL_ZFPM_FILE_ATTACH_UPLOAD IMPLEMENTATION.
 
 
   METHOD do_callback.
-    DATA: lv_event_id  TYPE fpm_event_id,
-          lo_fpm       TYPE REF TO if_fpm,
-          lo_event     TYPE REF TO cl_fpm_event,
-          lo_event_org TYPE REF TO cl_fpm_event,
-          lt_key       TYPE TABLE OF string,
-          lv_key       TYPE string,
-          lr_value     TYPE REF TO data,
-          lv_action    TYPE string,
-          lo_view      TYPE REF TO cl_wdr_view,
-          lo_action    TYPE REF TO if_wdr_action,
-          lt_param     TYPE wdr_name_value_list,
-          ls_param     TYPE wdr_name_value.
+    DATA: lv_event_id   TYPE fpm_event_id,
+          lo_fpm        TYPE REF TO if_fpm,
+          lo_event      TYPE REF TO cl_fpm_event,
+          lo_event_orig TYPE REF TO cl_fpm_event,
+          lt_key        TYPE TABLE OF string,
+          lv_key        TYPE string,
+          lr_value      TYPE REF TO data,
+          lv_action     TYPE string,
+          lo_view       TYPE REF TO cl_wdr_view,
+          lo_action     TYPE REF TO if_wdr_action,
+          lt_param      TYPE wdr_name_value_list,
+          ls_param      TYPE wdr_name_value.
 
 
 **********************************************************************
@@ -89,10 +89,10 @@ CLASS ZCL_ZFPM_FILE_ATTACH_UPLOAD IMPLEMENTATION.
         EXPORTING
           iv_key   = 'IO_EVENT_ORIG'
         IMPORTING
-          ev_value = lo_event_org
+          ev_value = lo_event_orig
       ).
-      IF lo_event_org IS NOT INITIAL.
-        lo_event->ms_source_uibb = lo_event_org->ms_source_uibb.
+      IF lo_event_orig IS NOT INITIAL.
+        lo_event->ms_source_uibb = lo_event_orig->ms_source_uibb.
       ENDIF.
 
       lo_fpm->raise_event( lo_event ).
